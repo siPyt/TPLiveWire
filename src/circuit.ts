@@ -4,6 +4,7 @@ export type TerminalId = 'l1' | 'fuseOut' | 'stopOut' | 'coilA1' | 'neutral'
 export type CircuitState = {
   running: boolean
   fault: Fault
+  powerOn?: boolean
 }
 
 type Component = {
@@ -61,6 +62,7 @@ export function resistanceBetween(state: CircuitState, from: TerminalId, to: Ter
 }
 
 export function terminalVoltage(state: CircuitState, terminal: TerminalId): number {
+  if (state.powerOn === false) return 0
   if (terminal === 'l1') return sourceVoltage
   if (terminal === 'neutral') return 0
 

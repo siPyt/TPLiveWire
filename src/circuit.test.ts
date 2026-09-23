@@ -27,6 +27,13 @@ describe('120 V start / stop seal-in circuit', () => {
     expect(hasContinuity(state, 'coilA1', 'neutral')).toBe(false)
   })
 
+  it('removes source voltage when control power is isolated', () => {
+    const state: CircuitState = { running: false, fault: 'None', powerOn: false }
+    expect(terminalVoltage(state, 'l1')).toBe(0)
+    expect(voltageBetween(state, 'l1', 'neutral')).toBe(0)
+    expect(resistanceBetween(state, 'coilA1', 'neutral')).toBe(248)
+  })
+
   it('reads a blown fuse correctly at all device boundaries', () => {
     const state = stopped('Blown fuse')
     expect(voltageBetween(state, 'l1', 'fuseOut')).toBe(120)
